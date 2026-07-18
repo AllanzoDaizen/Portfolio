@@ -473,7 +473,7 @@ python3 solve_off_the_record.py HOST PORT
 
 Successful remote output:
 
-![off-the-road](../../../Public/images/off-the-road.png)
+![off-the-road](/images/off-the-road.png)
 
 ```text
 [PRINTED]: 0x5c3fd05e21c0
