@@ -7,8 +7,10 @@ import {
   githubProfileUrl,
   linkedinProfileUrl
 } from "../scripts/home-data.js";
+import { slugifyPath } from "../utils/markdown-toc.js";
 
 const { htb, thm, ctftime } = await getHomeProfileData();
+const siteDescription = "BotNas cybersecurity portfolio and blog with hack platform profiles, lab notes, projects, and practical security writeups.";
 
 const blogModules = await Astro.glob("../content/blog/*.md");
 const blogPosts = blogModules
@@ -20,7 +22,7 @@ const blogPosts = blogModules
     image: post.frontmatter.image,
     imageAlt: post.frontmatter.imageAlt ?? "",
     status: post.frontmatter.status ?? "Draft queued",
-    href: post.frontmatter.href ?? "#contact"
+    href: `/blog/${post.frontmatter.slug ?? slugifyPath(post.frontmatter.title)}`
   }))
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -34,9 +36,17 @@ const visibleBlogPosts = [...blogPosts].slice(0, 3);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="BotNas cybersecurity portfolio and blog with hack platform profiles, lab notes, projects, and practical security writeups."
+      content={siteDescription}
     />
+    <meta name="theme-color" content="#030b18" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="BotNas | Cyber Portfolio & Blog" />
+    <meta property="og:description" content={siteDescription} />
+    <meta property="og:image" content="/images/off-the-record.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>BotNas | Cyber Portfolio & Blog</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -107,6 +117,8 @@ const visibleBlogPosts = [...blogPosts].slice(0, 3);
                 src={htb.profile.avatar}
                 alt={`${htb.profile.name} profile avatar`}
                 loading="eager"
+                fetchpriority="high"
+                decoding="async"
               />
               <div>
                 <span class="case-kicker">Verified </span>
@@ -138,7 +150,7 @@ const visibleBlogPosts = [...blogPosts].slice(0, 3);
       <section id="arsenal" class="section-shell reveal">
         <div class="section-heading">
           <p class="eyebrow">Skill stack</p>
-          <h2>What I work on now.</h2>
+          <h2>Areas of focus.</h2>
         </div>
 
         <div class="arsenal-grid">
@@ -173,7 +185,7 @@ const visibleBlogPosts = [...blogPosts].slice(0, 3);
         <div class="section-heading split-heading">
           <div>
             <p class="eyebrow">Credentials</p>
-            <h2>What I have earned and built.</h2>
+            <h2>My Credentials.</h2>
           </div>
         </div>
 
@@ -318,6 +330,7 @@ const visibleBlogPosts = [...blogPosts].slice(0, 3);
                     src={htb.profile.avatar}
                     alt={`${htb.profile.name} Hack The Box avatar`}
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <div class="htb-profile-main">
@@ -335,6 +348,8 @@ const visibleBlogPosts = [...blogPosts].slice(0, 3);
                     class="htb-rank-emblem"
                     src={htb.experience.rankImage}
                     alt=""
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>
@@ -360,7 +375,7 @@ const visibleBlogPosts = [...blogPosts].slice(0, 3);
               </div>
               <div class="thm-custom-profile" style={`--platform-rank-bg: url('${htb.experience.rankImageBackground}')`}>
                 {thm.avatar ? (
-                  <img class="thm-avatar" src={thm.avatar} alt={`${thm.username} TryHackMe avatar`} loading="lazy" />
+                  <img class="thm-avatar" src={thm.avatar} alt={`${thm.username} TryHackMe avatar`} loading="lazy" decoding="async" />
                 ) : (
                   <div class="thm-mark" aria-hidden="true">THM</div>
                 )}
@@ -391,7 +406,7 @@ const visibleBlogPosts = [...blogPosts].slice(0, 3);
                 <span class="proof-label">CTFTime</span>
               </div>
               <div class="ctftime-profile" style={`--platform-rank-bg: url('${htb.experience.rankImageBackground}')`}>
-                <img class="ctftime-avatar" src={ctftime.avatar} alt={`${ctftime.team} CTFTime team avatar`} loading="lazy" />
+                <img class="ctftime-avatar" src={ctftime.avatar} alt={`${ctftime.team} CTFTime team avatar`} loading="lazy" decoding="async" />
                 <div class="ctftime-profile-main">
                   <h4>{ctftime.team}</h4>
                   <span class="ctftime-status">{ctftime.type}</span>
@@ -443,7 +458,7 @@ const visibleBlogPosts = [...blogPosts].slice(0, 3);
           {visibleBlogPosts.map((post) => (
             <article class="blog-card">
               {post.image ? (
-                <img class="blog-image" src={post.image} alt={post.imageAlt} loading="lazy" />
+                <img class="blog-image" src={post.image} alt={post.imageAlt} loading="lazy" decoding="async" />
               ) : null}
               <p class="blog-date">
                 {new Date(post.date).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" })} / {post.category}
@@ -498,6 +513,8 @@ const visibleBlogPosts = [...blogPosts].slice(0, 3);
       <p>BotNas portfolio and blog. Cyber practice, CTFs, and notes.</p>
       <a href="#top">Back to top</a>
     </footer>
+
+    <a class="back-to-top" href="#top" aria-label="Back to top">Top</a>
 
     <script src="../scripts/site.js"></script>
   </body>

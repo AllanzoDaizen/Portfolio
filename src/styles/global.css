@@ -225,6 +225,10 @@ img {
   text-transform: uppercase;
 }
 
+.back-to-top {
+  display: none;
+}
+
 .section-shell {
   width: min(1120px, calc(100% - 1.25rem));
   margin: 0 auto;
@@ -1581,14 +1585,15 @@ p {
 
 .contact-section {
   display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(320px, 0.74fr);
-  align-items: center;
-  gap: clamp(1.5rem, 5vw, 3.4rem);
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: 1.1rem;
 }
 
 .contact-card {
   position: relative;
   overflow: hidden;
+  width: min(100%, 820px);
   padding: 1.2rem;
 }
 
@@ -1740,14 +1745,21 @@ p {
   }
 
   .nav {
-    display: none;
+    display: flex;
     width: 100%;
     flex-direction: column;
     align-items: stretch;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-0.35rem);
+    transition: max-height 260ms ease, opacity 180ms ease, transform 220ms ease;
   }
 
   .nav.is-open {
-    display: flex;
+    max-height: 20rem;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .nav a {
@@ -1770,7 +1782,10 @@ p {
     width: 100%;
     flex-direction: row;
     align-items: center;
+    max-height: none;
+    opacity: 1;
     overflow-x: auto;
+    transform: none;
   }
 
   .blog-post-topnav a {
@@ -1911,6 +1926,81 @@ p {
   .site-footer {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .blog-post-layout {
+    width: min(100% - 0.85rem, 1180px);
+    padding-top: 0.75rem;
+  }
+
+  .blog-post-main {
+    padding: 0;
+  }
+
+  .blog-sidebar__toc {
+    max-height: 14rem;
+  }
+
+  .blog-post-header {
+    padding: 0.9rem;
+  }
+
+  .blog-post-cover {
+    aspect-ratio: 16 / 9;
+  }
+
+  .blog-post-header h1 {
+    font-size: clamp(1.55rem, 8.4vw, 2.15rem);
+    line-height: 1.12;
+  }
+
+  .blog-post-lead {
+    font-size: 0.98rem;
+    line-height: 1.58;
+  }
+
+  .blog-post-content {
+    max-width: none;
+    padding: 0.95rem;
+    font-size: 0.96rem;
+    line-height: 1.72;
+  }
+
+  .blog-post-content h2 {
+    font-size: clamp(1.12rem, 6vw, 1.42rem);
+    line-height: 1.2;
+  }
+
+  .blog-post-content h3 {
+    font-size: 1rem;
+    line-height: 1.28;
+  }
+
+  .blog-post-content pre {
+    margin-inline: -0.25rem;
+    padding: 0.82rem;
+    font-size: 0.82rem;
+  }
+
+  .back-to-top {
+    position: fixed;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    z-index: 25;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.25rem;
+    min-height: 3.25rem;
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    background: rgba(100, 19, 63, 0.88);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.42);
+    font: 900 0.68rem / 1 var(--body);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    backdrop-filter: blur(12px);
   }
 
   .cert-showcase {

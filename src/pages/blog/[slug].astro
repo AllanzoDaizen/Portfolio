@@ -1,11 +1,25 @@
 ---
 import "../../styles/global.css";
-import * as post from "../../content/blog/press_f_writeup.md";
-import markdownSource from "../../content/blog/press_f_writeup.md?raw";
-import { getMarkdownToc } from "../../utils/markdown-toc.js";
+import { getMarkdownToc, slugifyPath } from "../../utils/markdown-toc.js";
 
+export function getStaticPaths() {
+  const postModules = import.meta.glob("../../content/blog/*.md", { eager: true });
+  const rawModules = import.meta.glob("../../content/blog/*.md", {
+    eager: true,
+    import: "default",
+    query: "?raw"
+  });
+
+  return Object.entries(postModules).map(([path, post]) => ({
+    params: { slug: post.frontmatter.slug ?? slugifyPath(post.frontmatter.title) },
+    props: { post, markdownSource: rawModules[path] }
+  }));
+}
+
+const { post, markdownSource } = Astro.props;
 const { Content, frontmatter } = post;
 const toc = getMarkdownToc(markdownSource);
+const pageTitle = `${frontmatter.title} | BotNas Blog`;
 ---
 <!doctype html>
 <html lang="en">
@@ -13,7 +27,15 @@ const toc = getMarkdownToc(markdownSource);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={frontmatter.excerpt} />
-    <title>{frontmatter.title} | BotNas Blog</title>
+    <meta name="theme-color" content="#030b18" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={frontmatter.excerpt} />
+    <meta property="og:image" content={frontmatter.image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{pageTitle}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,13 +43,13 @@ const toc = getMarkdownToc(markdownSource);
       rel="stylesheet"
     />
   </head>
-  <body class="blog-post-body">
+  <body id="top" class="blog-post-body">
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="noise" aria-hidden="true"></div>
     <canvas class="signal-canvas" data-signal-canvas aria-hidden="true"></canvas>
     <div class="cursor-aura" aria-hidden="true"></div>
 
-    <header class="site-header blog-post-headerbar">
+    <header class="site-header blog-post-headerbar" data-header>
       <a class="brand" href="/" aria-label="Go to portfolio homepage">
         <span class="brand-mark">BN</span>
         <span class="brand-copy">BotNas</span>
@@ -62,7 +84,7 @@ const toc = getMarkdownToc(markdownSource);
       <main id="main" class="blog-post-main">
         <article class="blog-post-article">
           <header class="blog-post-header">
-            <img class="blog-post-cover" src={frontmatter.image} alt={frontmatter.imageAlt} />
+            <img class="blog-post-cover" src={frontmatter.image} alt={frontmatter.imageAlt} loading="eager" fetchpriority="high" decoding="async" />
             <p class="eyebrow">{frontmatter.category} / Writeup</p>
             <h1>{frontmatter.title}</h1>
             <p class="blog-post-lead">{frontmatter.excerpt}</p>
@@ -74,6 +96,8 @@ const toc = getMarkdownToc(markdownSource);
         </article>
       </main>
     </div>
+
+    <a class="back-to-top" href="#top" aria-label="Back to top">Top</a>
     <script src="../../scripts/site.js"></script>
   </body>
 </html>

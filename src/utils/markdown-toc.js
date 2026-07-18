@@ -8,12 +8,17 @@ function cleanHeadingText(value) {
     .trim();
 }
 
-function slugifyHeading(value, seen) {
-  const base = cleanHeadingText(value)
+export function slugifyPath(value) {
+  return cleanHeadingText(value)
     .toLowerCase()
     .replace(/[^\p{L}\p{N}\s-]/gu, "")
     .trim()
-    .replace(/\s+/g, "-");
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+function slugifyHeading(value, seen) {
+  const base = slugifyPath(value);
 
   const count = seen.get(base) ?? 0;
   seen.set(base, count + 1);

@@ -6,6 +6,15 @@ const signalCanvas = document.querySelector("[data-signal-canvas]");
 const typewriter = document.querySelector("[data-typewriter]");
 const sections = [...document.querySelectorAll("main section[id]")];
 const navLinks = [...document.querySelectorAll(".nav a")];
+const defaultTitle = document.title;
+const sectionTitles = {
+  top: "BotNas | Cyber Portfolio & Blog",
+  arsenal: "Skills | BotNas Cyber Portfolio",
+  credentials: "Credentials | BotNas Cyber Portfolio",
+  missions: "Projects | BotNas Cyber Portfolio",
+  blog: "Blog & Writeups | BotNas Cyber Portfolio",
+  contact: "Contact | BotNas Cyber Portfolio"
+};
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const pointer = {
   x: window.innerWidth * 0.72,
@@ -31,6 +40,12 @@ function setActiveNav() {
   navLinks.forEach((link) => {
     link.classList.toggle("is-active", link.getAttribute("href") === `#${current?.id}`);
   });
+
+  if (current?.id && sectionTitles[current.id]) {
+    document.title = sectionTitles[current.id];
+  } else {
+    document.title = defaultTitle;
+  }
 }
 
 function typeTerminal() {
