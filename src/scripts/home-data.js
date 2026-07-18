@@ -4,8 +4,8 @@ const thmApiUrl = "https://tryhackme.com/api/v2/public-profile?username=BotNas";
 const thmProfileUrl = "https://tryhackme.com/p/BotNas";
 const ctftimeProfileUrl = "https://ctftime.org/team/436924";
 
-export const githubProfileUrl = "https://github.com/BotNas";
-export const linkedinProfileUrl = "https://www.linkedin.com/in/botnas/";
+export const githubProfileUrl = "https://github.com/AllanzoDaizen";
+export const linkedinProfileUrl = "https://www.linkedin.com/in/sok-sovannara-68478632b/";
 
 const fallbackHtb = {
   profile: {
