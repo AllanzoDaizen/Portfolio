@@ -1,0 +1,504 @@
+---
+import "../styles/global.css";
+import {
+  certifications,
+  formatRank,
+  getHomeProfileData,
+  githubProfileUrl,
+  linkedinProfileUrl
+} from "../scripts/home-data.js";
+
+const { htb, thm, ctftime } = await getHomeProfileData();
+
+const blogModules = await Astro.glob("../content/blog/*.md");
+const blogPosts = blogModules
+  .map((post) => ({
+    title: post.frontmatter.title,
+    date: post.frontmatter.date,
+    category: post.frontmatter.category,
+    excerpt: post.frontmatter.excerpt,
+    image: post.frontmatter.image,
+    imageAlt: post.frontmatter.imageAlt ?? "",
+    status: post.frontmatter.status ?? "Draft queued",
+    href: post.frontmatter.href ?? "#contact"
+  }))
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const visibleBlogPosts = [...blogPosts].slice(0, 3);
+
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="BotNas cybersecurity portfolio and blog with hack platform profiles, lab notes, projects, and practical security writeups."
+    />
+    <title>BotNas | Cyber Portfolio & Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="noise" aria-hidden="true"></div>
+    <canvas class="signal-canvas" data-signal-canvas aria-hidden="true"></canvas>
+    <div class="cursor-aura" aria-hidden="true"></div>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="#top" aria-label="Go to top">
+        <span class="brand-mark">BN</span>
+        <span class="brand-copy">Sovannara-BotNas</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span>Menu</span>
+      </button>
+
+      <nav id="primary-nav" class="nav" aria-label="Primary navigation">
+        <a href="#arsenal">Skills</a>
+        <a href="#credentials">Credentials</a>
+        <a href="#missions">Projects</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section id="top" class="hero section-shell">
+        <div class="hero-copy">
+          <p class="eyebrow">Cybersecurity portfolio + blog</p>
+          <h1>
+            BotNas
+            <span>Breaking targets down, tracking signals, and writing the path.</span>
+          </h1>
+          <p class="hero-text">
+            My experience spans offensive security, CTF challenges, and threat intelligence research,
+            with notes that turn useful lessons into readable writeups.
+          </p>
+
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="btn btn-primary" href="/blog/off-the-record">Read latest writeup</a>
+            <a class="btn btn-ghost" href="#missions">View projects</a>
+            <a class="btn btn-ghost" href="#credentials">Credentials</a>
+          </div>
+
+          <div class="signal-strip" aria-label="Current operator stats">
+            <span><strong>HTB</strong>{htb.profile.rank} Lv {htb.experience.level}</span>
+            <span><strong>THM</strong>{thm.title} Lv {thm.level}</span>
+            <span><strong>CTFTime</strong>KH #{ctftime.countryPlace} / #{ctftime.overallPlace}</span>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="BotNas profile proof card">
+          <div class="case-file">
+            <div class="case-file__topline">
+              <span>Player Profile</span>
+            </div>
+            <div class="case-file__identity">
+              <img
+                class="case-avatar"
+                src={htb.profile.avatar}
+                alt={`${htb.profile.name} profile avatar`}
+                loading="eager"
+              />
+              <div>
+                <span class="case-kicker">Verified </span>
+                <strong>{htb.profile.name}</strong>
+                <p>{htb.profile.rank} / {thm.title} / {ctftime.team} / Komnot</p>
+              </div>
+            </div>
+            <div class="case-file__routes" aria-label="Platform evidence summary">
+              <a>
+                <span>Competition</span>
+                <strong>10 +</strong>
+                <small>CTF and Startup Competitions</small>
+              </a>
+              <a>
+                <span>Certification</span>
+                <strong>5 +</strong>
+                <small>Certified and training credentials</small>
+              </a>
+              <a>
+                <span>Hobbies</span>
+                <strong><3</strong>
+                <small>Research, Security Testing, CTFs & Offsec Practice</small>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="arsenal" class="section-shell reveal">
+        <div class="section-heading">
+          <p class="eyebrow">Skill stack</p>
+          <h2>What I work on now.</h2>
+        </div>
+
+        <div class="arsenal-grid">
+          <article class="skill-card">
+            <span class="skill-icon">WEB/API</span>
+            <h3>Web & API Security</h3>
+            <p>Testing web applications and APIs for auth flaws, IDOR, injection, upload issues, SSRF, and broken access control.</p>
+            <div class="meter" style="--level: 86%"><span></span></div>
+          </article>
+          <article class="skill-card">
+            <span class="skill-icon">VA</span>
+            <h3>Vulnerability Assessment</h3>
+            <p>Mapping attack surface, validating weaknesses, prioritizing impact, and documenting findings clearly.</p>
+            <div class="meter" style="--level: 82%"><span></span></div>
+          </article>
+          <article class="skill-card">
+            <span class="skill-icon">CTF</span>
+            <h3>CTF</h3>
+            <p>Solving pwn and web challenges, building repeatable exploit paths, and turning solves into readable writeups.</p>
+            <div class="meter" style="--level: 78%"><span></span></div>
+          </article>
+          <article class="skill-card">
+            <span class="skill-icon">TI</span>
+            <h3>Threat Intelligence</h3>
+            <p>Researching signals, public-source pivots, exposed infrastructure, adversary behavior, and clean investigation notes.</p>
+            <div class="meter" style="--level: 74%"><span></span></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="credentials" class="section-shell reveal">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Credentials</p>
+            <h2>What I have earned and built.</h2>
+          </div>
+        </div>
+
+        <div class="proof-group">
+          <h3>Achievements</h3>
+          <div class="proof-grid proof-grid-compact profiles-grid">
+            <a
+              class="proof-card achievement-link-card"
+              href="https://www.linkedin.com/posts/mptcgovkhmer_cyberarena2026-cybersecurity-cyberchallenge-activity-7478691235474350080-vyWt"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span class="proof-label rank-label rank-label-gold"><span>Top 1</span><span class="rank-label-type">- CTF</span></span>
+              <h4>Cyber Arena 2026</h4>
+              <p><b>{ctftime.team}</b> placed 1st in Cyber Arena 2026, an online CTF competition with 157 teams.</p>
+              <p class="achievement-meta">Organized by MPTC Cambodia</p>
+            </a>
+
+            <a class="proof-card achievement-link-card" href="https://ctftime.org/event/3299" target="_blank" rel="noreferrer">
+              <span class="proof-label rank-label rank-label-gold"><span>Top 1</span><span class="rank-label-type">- CTF</span></span>
+              <h4>Sieberrsec CTF 7.0</h4>
+              <p><b>{ctftime.team}</b> placed 1st with 13,156 CTF points in Sieberrsec CTF 7.0, an online CTF competition with several teams.</p>
+              <p class="achievement-meta">Organized by Sieberrsec</p>
+            </a>
+
+            <a class="proof-card achievement-link-card" href="https://www.facebook.com/watch/?v=1571557707607315" target="_blank" rel="noreferrer">
+              <span class="proof-label rank-label rank-label-outline"><span>Top 5</span><span class="rank-label-type">- CTF</span></span>
+              <h4>KOH KER OSINT CTF 2025</h4>
+              <p>I placed 5th in KOH KER OSINT CTF 2025, an in-person OSINT CTF competition.</p>
+              <p class="achievement-meta">Organized by Technovage Solution</p>
+            </a>
+
+            <a
+              class="proof-card achievement-link-card"
+              href="https://www.facebook.com/CADT.Academy/posts/congratulations-to-our-second-year-cybersecurity-students-for-achieving-first-pl/1109806664674575/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span class="proof-label rank-label rank-label-gold"><span>Top 1</span><span class="rank-label-type">- Startup</span></span>
+              <h4>Finclusion Innovate</h4>
+              <p><b>Komnot</b> placed 1st in the Finclusion Innovate Competition by presenting cybersecurity solutions that help people detect and avoid scams.</p>
+              <p class="achievement-meta">Co-organized by NBC and CBC</p>
+            </a>
+
+            <a
+              class="proof-card achievement-link-card"
+              href="https://www.facebook.com/share/1Efofdsyfq/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span class="proof-label rank-label rank-label-silver"><span>Top 2</span><span class="rank-label-type">- Startup</span></span>
+              <h4>Innovative Tech Challenge Season 3</h4>
+              <p><b>Komnot</b> placed 2nd in Innovative Tech Challenge Season 3 by presenting cybersecurity solutions "Komnot App" that help people detect and avoid scams.</p>
+              <p class="achievement-meta">Co-organized by Khmer Enterprise and CamTech University</p>
+            </a>
+
+            <a
+              class="proof-card achievement-link-card"
+              href="https://www.linkedin.com/posts/rmit-university-vietnam_rmitvietnam-rmitvn25years-uncybercrimehackathon-activity-7389903985585020928-McH5"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span class="proof-label rank-label rank-label-outline"><span>Final Round</span><span class="rank-label-type">- Startup</span></span>
+              <h4>UN Cybercrime Hackathon</h4>
+              <p><b>Komnot</b> qualified for the final round in Hanoi, Vietnam by presenting cybersecurity solutions, "Komnot App" that help people detect and avoid scams.</p>
+              <p class="achievement-meta">Organized by RMIT University</p>
+            </a>
+
+          </div>
+        </div>
+
+        <div class="proof-group">
+          <h3>Certification</h3>
+          <div class="cert-showcase" data-cert-showcase>
+            <div class="cert-preview-stack" aria-label="Certificate previews">
+              {certifications.map((cert, index) => (
+                <button
+                  class:list={["cert-preview-card", index === 0 && "is-active"]}
+                  type="button"
+                  data-cert-trigger={cert.id}
+                  style={`--cert-index: ${index}; --cert-image: url('${cert.image}')`}
+                  aria-label={`Show ${cert.title}`}
+                  aria-pressed={index === 0 ? "true" : "false"}
+                >
+                  <span class="cert-preview-image" aria-hidden="true"></span>
+                </button>
+              ))}
+            </div>
+
+            <div class="cert-rail" role="list" aria-label="Certification list">
+              {certifications.map((cert, index) => (
+                <button
+                  class:list={["cert-rail-item", index === 0 && "is-active"]}
+                  type="button"
+                  data-cert-trigger={cert.id}
+                  aria-pressed={index === 0 ? "true" : "false"}
+                >
+                  <span class="cert-rail-dot" aria-hidden="true"></span>
+                  <span>
+                    <small>{cert.issuer}</small>
+                    <strong>{cert.shortName}</strong>
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <div class="cert-detail-panel">
+              {certifications.map((cert, index) => (
+                <article
+                  class:list={["cert-detail", index === 0 && "is-active"]}
+                  data-cert-panel={cert.id}
+                  aria-hidden={index === 0 ? "false" : "true"}
+                >
+                  <span class="proof-label">{cert.issuer}</span>
+                  <h4>{cert.title}</h4>
+                  <p>{cert.description}</p>
+                  <p>{cert.detail}</p>
+                  <a class="cert-proof-link" href={cert.link} target="_blank" rel="noreferrer">View certificate</a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div id="hack-platforms" class="proof-group">
+          <h3>Hack Platforms</h3>
+          <div class="proof-grid proof-grid-compact">
+            <a
+              class="proof-card profile-proof-card htb-card profile-link-card"
+              href="https://app.hackthebox.com/public/users/2706826"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Open BotNas Hack The Box profile"
+            >
+              <div class="platform-topline">
+                <span class="proof-label">Hack The Box</span>
+              </div>
+              <div class="htb-custom-profile" style={`--htb-rank-bg: url('${htb.experience.rankImageBackground}')`}>
+                <div class="htb-avatar-wrap" aria-label="Hack The Box profile picture">
+                  <img
+                    class="htb-avatar"
+                    src={htb.profile.avatar}
+                    alt={`${htb.profile.name} Hack The Box avatar`}
+                    loading="lazy"
+                  />
+                </div>
+                <div class="htb-profile-main">
+                  <div class="htb-identity-line">
+                    <h4>{htb.profile.name}</h4>
+                    <span class="htb-rank-pill">{htb.profile.rank}</span>
+                  </div>
+                  <div class="htb-level-line">
+                    <span>Level</span>
+                    <strong>{htb.experience.level}</strong>
+                  </div>
+                </div>
+                <div class="htb-rank-showcase" aria-hidden="true">
+                  <img
+                    class="htb-rank-emblem"
+                    src={htb.experience.rankImage}
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div class="platform-stats" aria-label="Hack The Box ranking stats">
+                <span><strong>{formatRank(htb.profile.ranking)}</strong> Global rank</span>
+                {formatRank(htb.profile.countryRank ?? htb.profile.country_ranking ?? htb.profile.country_rank) ? (
+                  <span><strong>{formatRank(htb.profile.countryRank ?? htb.profile.country_ranking ?? htb.profile.country_rank)}</strong> Cambodia</span>
+                ) : (
+                  <span><strong>{htb.profile.country_code ?? "KH"}</strong> Country</span>
+                )}
+              </div>
+            </a>
+
+            <a
+              class="proof-card profile-proof-card thm-card profile-link-card"
+              href={thm.profileUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Open BotNas TryHackMe profile"
+            >
+              <div class="platform-topline">
+                <span class="proof-label">TryHackMe</span>
+              </div>
+              <div class="thm-custom-profile" style={`--platform-rank-bg: url('${htb.experience.rankImageBackground}')`}>
+                {thm.avatar ? (
+                  <img class="thm-avatar" src={thm.avatar} alt={`${thm.username} TryHackMe avatar`} loading="lazy" />
+                ) : (
+                  <div class="thm-mark" aria-hidden="true">THM</div>
+                )}
+                <div class="thm-profile-main">
+                  <h4>{thm.username}</h4>
+                  <span class="thm-status">Level {thm.level}</span>
+                  <span class="thm-title">{String(thm.title).toUpperCase()}</span>
+                </div>
+              </div>
+              <div class="platform-stats" aria-label="TryHackMe ranking stats">
+                <span><strong>{formatRank(thm.rank)}</strong> Global rank</span>
+                {formatRank(thm.countryRank) ? (
+                  <span><strong>{formatRank(thm.countryRank)}</strong> Cambodia</span>
+                ) : (
+                  <span><strong>{String(thm.country).toUpperCase()}</strong> Country</span>
+                )}
+              </div>
+            </a>
+
+            <a
+              class="proof-card profile-proof-card ctftime-card profile-link-card"
+              href={ctftime.profileUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Open ${ctftime.team} CTFTime team profile`}
+            >
+              <div class="platform-topline">
+                <span class="proof-label">CTFTime</span>
+              </div>
+              <div class="ctftime-profile" style={`--platform-rank-bg: url('${htb.experience.rankImageBackground}')`}>
+                <img class="ctftime-avatar" src={ctftime.avatar} alt={`${ctftime.team} CTFTime team avatar`} loading="lazy" />
+                <div class="ctftime-profile-main">
+                  <h4>{ctftime.team}</h4>
+                  <span class="ctftime-status">{ctftime.type}</span>
+                  <span class="ctftime-title">{ctftime.tagline}</span>
+                </div>
+              </div>
+              <div class="platform-stats" aria-label="CTFTime 2026 ranking stats">
+                <span><strong>#{ctftime.overallPlace}</strong> Overall 2026</span>
+                <span><strong>#{ctftime.countryPlace}</strong> {ctftime.country}</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="missions" class="section-shell reveal">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Projects</p>
+            <h2>Projects in progress.</h2>
+          </div>
+        </div>
+
+        <div class="mission-board">
+          <article class="mission-card featured">
+            <div class="mission-meta">
+              <span>Project</span>
+              <span>Red Team Simulation</span>
+            </div>
+            <h3><b>Basic Ransomware Simulation using AES and RSA algorithms</b></h3>
+            <p>
+              Demonstrate ransomware behavior with AES-based file encryption and RSA key protection,
+              covering payload workflow, attack assumptions, and defensive measures.
+            </p>
+            <a href="https://github.com/AllanzoDaizen/Basic-Ransomware-Simulation-using-RSA-and-AES-algorithms.git" aria-label="Basic Ransomware Using AES and RSA algorithms" target="_blank">Open Project</a>
+          </article>
+        </div>
+      </section>
+
+      <section id="blog" class="section-shell reveal">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Blog</p>
+            <h2>Blogs and writeups.</h2>
+          </div>
+        </div>
+
+        <div class="blog-grid">
+          {visibleBlogPosts.map((post) => (
+            <article class="blog-card">
+              {post.image ? (
+                <img class="blog-image" src={post.image} alt={post.imageAlt} loading="lazy" />
+              ) : null}
+              <p class="blog-date">
+                {new Date(post.date).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" })} / {post.category}
+              </p>
+              <h3><b>{post.title}</b></h3>
+              <p>{post.excerpt}</p>
+              <a href={post.href}>{post.status}</a>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="contact" class="section-shell contact-section reveal">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2>Links and contact.</h2>
+        </div>
+        <div class="contact-card">
+          <p>Verified hack platform profiles, GitHub, and LinkedIn are the best contact paths for now.</p>
+          <div class="contact-links">
+            <a href={githubProfileUrl} target="_blank" rel="noreferrer">
+              <span class="contact-link-main">
+                <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2C6.48 2 2 6.58 2 12.24c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.49v-1.8c-2.78.62-3.37-1.22-3.37-1.22-.46-1.2-1.11-1.52-1.11-1.52-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.34 9.34 0 0 1 12 7.01c.85 0 1.7.12 2.5.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.95.68 1.91v2.73c0 .27.18.59.69.49A10.13 10.13 0 0 0 22 12.24C22 6.58 17.52 2 12 2Z" />
+                </svg>
+                GitHub
+              </span>
+            </a>
+            <a href={linkedinProfileUrl} target="_blank" rel="noreferrer">
+              <span class="contact-link-main">
+                <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5.34 8.95H2.62V21h2.72V8.95ZM5.52 5.23C5.5 4.42 4.92 3.8 3.99 3.8s-1.54.62-1.54 1.43c0 .79.59 1.43 1.5 1.43h.02c.96 0 1.55-.64 1.55-1.43ZM21.55 14.1c0-3.71-1.98-5.44-4.62-5.44-2.13 0-3.08 1.17-3.62 2v-1.7h-2.72c.04 1.13 0 12.05 0 12.05h2.72v-6.73c0-.36.03-.72.13-.98.29-.72.94-1.46 2.03-1.46 1.43 0 2.01 1.1 2.01 2.71V21h2.72l.05-6.9Z" />
+                </svg>
+                LinkedIn
+              </span>
+            </a>
+            <a href="https://app.hackthebox.com/public/users/2706826" target="_blank" rel="noreferrer">
+              <span class="contact-link-main"><span class="contact-mark">HTB</span>Hack The Box</span>
+            </a>
+            <a href={thm.profileUrl} target="_blank" rel="noreferrer">
+              <span class="contact-link-main"><span class="contact-mark">THM</span>TryHackMe</span>
+            </a>
+            <a href={ctftime.profileUrl} target="_blank" rel="noreferrer">
+              <span class="contact-link-main"><span class="contact-mark">CTF</span>CTFTime Team</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>BotNas portfolio and blog. Cyber practice, CTFs, and notes.</p>
+      <a href="#top">Back to top</a>
+    </footer>
+
+    <script src="../scripts/site.js"></script>
+  </body>
+</html>

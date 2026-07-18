@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Web challenge teardown cover</title>
+  <desc id="desc">Dark blue and pink web exploit cover art.</desc>
+  <rect width="960" height="540" fill="#071427"/>
+  <path d="M0 0h960v540H0z" fill="#030b18" opacity="0.65"/>
+  <circle cx="740" cy="90" r="260" fill="#d9357d" opacity="0.18"/>
+  <rect x="58" y="58" width="844" height="424" fill="none" stroke="#d9357d" stroke-opacity="0.7"/>
+  <text x="88" y="126" fill="#ff9ab6" font-family="Nunito, Arial, sans-serif" font-size="23" font-weight="900" letter-spacing="8">WEB EXPLOIT</text>
+  <text x="88" y="236" fill="#edf4ff" font-family="Bungee, Impact, sans-serif" font-size="62">CHALLENGE</text>
+  <text x="88" y="310" fill="#edf4ff" font-family="Bungee, Impact, sans-serif" font-size="62">TEARDOWN</text>
+  <path d="M92 374h420" stroke="#d9357d" stroke-width="2"/>
+  <text x="92" y="420" fill="#9daabe" font-family="Nunito, Arial, sans-serif" font-size="25" font-weight="800">source review · inputs · payloads</text>
+</svg>

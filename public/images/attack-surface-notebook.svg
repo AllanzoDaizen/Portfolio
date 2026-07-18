@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Attack surface notebook cover</title>
+  <desc id="desc">Dark blue and pink OSINT notebook cover art.</desc>
+  <rect width="960" height="540" fill="#030b18"/>
+  <radialGradient id="g" cx="78%" cy="18%" r="58%"><stop offset="0" stop-color="#d9357d" stop-opacity=".28"/><stop offset="1" stop-color="#d9357d" stop-opacity="0"/></radialGradient>
+  <rect width="960" height="540" fill="url(#g)"/>
+  <rect x="64" y="52" width="832" height="436" fill="none" stroke="#d9357d" stroke-opacity=".68"/>
+  <text x="96" y="126" fill="#ff9ab6" font-family="Nunito, Arial, sans-serif" font-size="23" font-weight="900" letter-spacing="8">OSINT NOTES</text>
+  <text x="96" y="238" fill="#edf4ff" font-family="Bungee, Impact, sans-serif" font-size="60">ATTACK</text>
+  <text x="96" y="310" fill="#edf4ff" font-family="Bungee, Impact, sans-serif" font-size="60">SURFACE</text>
+  <g fill="none" stroke="#ff9ab6" stroke-opacity=".5">
+    <circle cx="694" cy="230" r="36"/><circle cx="790" cy="164" r="28"/><circle cx="792" cy="310" r="32"/>
+    <path d="M725 212l41-31M727 249l38 42"/>
+  </g>
+  <text x="100" y="410" fill="#9daabe" font-family="Nunito, Arial, sans-serif" font-size="25" font-weight="800">subdomains · metadata · exposed panels</text>
+</svg>
