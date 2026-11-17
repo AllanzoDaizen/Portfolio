@@ -96,7 +96,7 @@ export const certifications = [
     title: "Certified Security Code Review Beginners (CSCRB)",
     description: "Security code review certification focused on finding vulnerabilities through source analysis.",
     link: "https://courses.redteamleaders.com/exam-completion/84d56eab86b5f7c9",
-    detail: "Focuses on reviewing application code paths, spotting risky patterns, and documenting vulnerabilities from source-level evidence.",
+    detail: "Focuses on reviewing application code paths, spotting risky patterns, and documenting vulnerabilities from source-level evidence. Hi! AICA{I_N33d_<flag2>",
     image: "/images/cert-cscrb-preview.jpg"
   }
 ];
